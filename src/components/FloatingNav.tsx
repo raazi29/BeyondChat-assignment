@@ -55,12 +55,12 @@ const FloatingNav = () => {
     if (isLabPage || !isVisible) return null;
 
     return (
-        <nav className="fixed top-5 left-1/2 -translate-x-1/2 z-[100]">
-            <div className="flex items-center gap-2 h-12 px-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md">
+        <nav className="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] sm:w-auto max-w-[95vw]">
+            <div className="flex items-center justify-between sm:justify-start gap-2 h-11 sm:h-12 px-3 sm:px-2 rounded-full border border-white/20 bg-black/80 sm:bg-white/5 backdrop-blur-md">
                 {/* Logo */}
                 <Link
                     href="/"
-                    className="flex items-center gap-2 h-8 px-3 rounded-full hover:bg-white/10 transition-colors"
+                    className="flex items-center gap-2 h-8 px-2 sm:px-3 rounded-full hover:bg-white/10 transition-colors"
                 >
                     <Image
                         src="/beyondchats-logo.png"
@@ -74,17 +74,18 @@ const FloatingNav = () => {
                     </span>
                 </Link>
 
-                <div className="w-px h-5 bg-white/20" />
+                {/* Separator - Hidden on mobile */}
+                <div className="hidden sm:block w-px h-5 bg-white/20" />
 
-                {/* Nav Links - Updated to match screenshot style "VISION FEATURES PIPELINE" */}
-                <div className="flex items-center gap-0.5">
+                {/* Nav Links - Hidden on mobile */}
+                <div className="hidden sm:flex items-center gap-0.5">
                     {['vision', 'features', 'pipeline'].map((section) => (
                         <button
                             key={section}
                             onClick={() => scrollTo(section)}
                             className={`h-8 px-4 rounded-full font-mono text-[10px] tracking-[0.1em] uppercase transition-all duration-300 ${activeSection === section
-                                    ? 'text-white bg-white/15'
-                                    : 'text-white/60 hover:text-white hover:bg-white/10'
+                                ? 'text-white bg-white/15'
+                                : 'text-white/60 hover:text-white hover:bg-white/10'
                                 }`}
                         >
                             {section}
@@ -92,12 +93,13 @@ const FloatingNav = () => {
                     ))}
                 </div>
 
-                <div className="w-px h-5 bg-white/20" />
+                {/* Separator - Hidden on mobile */}
+                <div className="hidden sm:block w-px h-5 bg-white/20" />
 
                 {/* CTA */}
                 <Link
                     href="/lab"
-                    className="h-8 px-5 rounded-full bg-white text-black font-mono text-[10px] tracking-[0.12em] uppercase flex items-center font-medium hover:bg-white/90 transition-colors"
+                    className="h-8 px-4 sm:px-5 rounded-full bg-white text-black font-mono text-[10px] tracking-[0.12em] uppercase flex items-center font-medium hover:bg-white/90 transition-colors"
                 >
                     Lab
                 </Link>
@@ -107,3 +109,4 @@ const FloatingNav = () => {
 };
 
 export default FloatingNav;
+
