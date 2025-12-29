@@ -276,7 +276,7 @@ export default function ArticlesPage() {
       )}
 
       {/* Sidebar Navigation */}
-      <aside className={`fixed md:relative top-0 left-0 h-screen w-80 bg-[#080808] border-r border-white/5 flex flex-col z-50 transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+      <aside className={`fixed md:relative top-0 left-0 h-screen w-[85vw] sm:w-80 max-w-80 bg-[#080808] border-r border-white/5 flex flex-col z-50 transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}>
         <div className="p-6 border-b border-white/5 flex-shrink-0">
           <Link href="/" className="flex items-center gap-2 mb-8 group">
@@ -319,7 +319,7 @@ export default function ArticlesPage() {
           <div className="flex flex-col gap-1">
             {loading ? (
               Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="h-16 bg-white/[0.02] animate-pulse rounded-sm mb-1" />
+                <div key={i} className="h-16 animate-shimmer rounded-sm mb-1" />
               ))
             ) : (
               articles.filter((a: Article) => !a.is_updated).map((article: Article) => {
@@ -345,7 +345,7 @@ export default function ArticlesPage() {
                         <span className="text-xs font-medium leading-tight line-clamp-1">
                           {article.title}
                         </span>
-                        {isEnhanced && <div className="w-1 h-1 rounded-full bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)]" />}
+                        {isEnhanced && <div className="w-1.5 h-1.5 rounded-full bg-sky-500 pulse-glow" />}
                       </div>
                       <span className="font-mono text-[10px] text-white/20 uppercase tracking-widest">
                         {new Date(article.created_at).toLocaleDateString()}
@@ -380,12 +380,12 @@ export default function ArticlesPage() {
                 >
                   <Menu className="w-5 h-5" />
                 </button>
-                <nav className="flex items-center gap-1">
+                <nav className="flex items-center gap-0 sm:gap-1">
                   {(['view', 'compare', 'chat'] as const).map((mode) => (
                     <button
                       key={mode}
                       onClick={() => setViewMode(mode)}
-                      className={`px-4 py-2 font-mono text-[10px] tracking-[0.2em] uppercase transition-all relative ${viewMode === mode ? 'text-white' : 'text-white/40 hover:text-white/60'
+                      className={`px-2 sm:px-4 py-2 font-mono text-[9px] sm:text-[10px] tracking-[0.15em] sm:tracking-[0.2em] uppercase transition-all relative ${viewMode === mode ? 'text-white' : 'text-white/40 hover:text-white/60'
                         }`}
                     >
                       {mode}
@@ -589,9 +589,9 @@ export default function ArticlesPage() {
                         </button>
                       </div>
                     ) : (
-                      <div className="flex-1 flex flex-col md:flex-row w-full h-full p-4 md:p-6 gap-4 md:gap-6">
+                      <div className="flex-1 flex flex-col md:flex-row w-full h-full p-3 sm:p-4 md:p-6 gap-3 sm:gap-4 md:gap-6 overflow-y-auto">
                         {/* Original Panel */}
-                        <div className="flex-1 flex flex-col min-h-0 bg-[#0a0a0a] rounded-lg border border-white/5 overflow-hidden">
+                        <div className="flex-1 flex flex-col min-h-[40vh] md:min-h-0 bg-[#0a0a0a] rounded-lg border border-white/5 overflow-hidden">
                           <div className="px-6 py-4 border-b border-white/5 bg-white/[0.02] flex items-center justify-between sticky top-0 z-10 backdrop-blur-md">
                             <div className="flex items-center gap-2">
                               <div className="w-2 h-2 rounded-full border border-white/20" />
@@ -607,7 +607,7 @@ export default function ArticlesPage() {
                         </div>
 
                         {/* Enhanced Panel */}
-                        <div className="flex-1 flex flex-col min-h-0 bg-[#0a0a0a] rounded-lg border border-sky-500/10 overflow-hidden relative">
+                        <div className="flex-1 flex flex-col min-h-[40vh] md:min-h-0 bg-[#0a0a0a] rounded-lg border border-sky-500/10 overflow-hidden relative">
                           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-sky-500/20 to-transparent" />
                           <div className="px-6 py-4 border-b border-white/5 bg-sky-500/[0.02] flex items-center justify-between sticky top-0 z-10 backdrop-blur-md">
                             <div className="flex items-center gap-2">
@@ -680,11 +680,9 @@ export default function ArticlesPage() {
                       ))}
                       {isChatLoading && (
                         <div className="flex justify-start">
-                          <div className="bg-white/5 border border-white/10 px-5 py-4 rounded-lg animate-pulse">
-                            <div className="flex gap-1.5">
-                              <div className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" />
-                              <div className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce [animation-delay:0.1s]" />
-                              <div className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce [animation-delay:0.2s]" />
+                          <div className="bg-white/5 border border-white/10 px-5 py-4 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-sm text-white/60 typewriter-cursor">Thinking</span>
                             </div>
                           </div>
                         </div>
@@ -692,20 +690,20 @@ export default function ArticlesPage() {
                       <div ref={chatEndRef} />
                     </div>
 
-                    <div className="p-6 border-t border-white/5 bg-[#080808]">
-                      <div className="max-w-4xl mx-auto flex gap-4">
+                    <div className="p-3 sm:p-4 md:p-6 border-t border-white/5 bg-[#080808]">
+                      <div className="max-w-4xl mx-auto flex gap-2 sm:gap-4">
                         <input
                           type="text"
                           value={inputMessage}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputMessage(e.target.value)}
                           onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleSendMessage()}
                           placeholder="Type a message..."
-                          className="flex-1 bg-white/5 border border-white/10 px-5 py-4 rounded-lg text-sm focus:outline-none focus:border-white/30 transition-all font-sans"
+                          className="flex-1 bg-white/5 border border-white/10 px-3 sm:px-5 py-3 sm:py-4 rounded-lg text-sm focus:outline-none focus:border-white/30 transition-all font-sans"
                         />
                         <button
                           onClick={handleSendMessage}
                           disabled={isChatLoading || !inputMessage.trim()}
-                          className="px-8 py-4 bg-white text-black font-mono text-[10px] tracking-[0.2em] uppercase rounded-lg hover:bg-white/90 transition-all disabled:opacity-50"
+                          className="px-4 sm:px-8 py-3 sm:py-4 bg-white text-black font-mono text-[9px] sm:text-[10px] tracking-[0.2em] uppercase rounded-lg hover:bg-white/90 transition-all disabled:opacity-50"
                         >
                           Send
                         </button>
