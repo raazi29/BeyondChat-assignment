@@ -198,4 +198,62 @@
     padding-left: 4vw;
     padding-right: 4vw;
   }
+
+  /* Optimized CSS Animations */
+  @keyframes float-particle {
+    0% {
+      transform: translateY(-10%);
+      opacity: 0;
+    }
+
+    10% {
+      opacity: var(--opacity, 0.4);
+    }
+
+    90% {
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(110%);
+      opacity: 0;
+    }
+  }
+
+  .animate-particle {
+    animation: float-particle linear infinite;
+    will-change: transform, opacity;
+  }
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+    opacity: 0;
+    /* meaningful initial state */
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 60s linear infinite;
+  }
 }

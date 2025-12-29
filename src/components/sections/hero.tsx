@@ -1,23 +1,29 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 const HeroSection = () => {
   // Generate stable random particles for the background only on client
+  // Using simple array of objects for CSS variables
   const [particles, setParticles] = useState<any[]>([]);
 
   useEffect(() => {
-    setParticles(Array.from({ length: 40 }).map((_, i) => ({
+    // Generate particles only once on mount
+    const newParticles = Array.from({ length: 40 }).map((_, i) => ({
       id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2 + 1,
-      duration: Math.random() * 20 + 20,
-      delay: Math.random() * -20,
-    })));
+      style: {
+        left: `${Math.random() * 100}%`,
+        width: `${Math.random() * 2 + 1}px`,
+        height: `${Math.random() * 2 + 1}px`,
+        animationDuration: `${Math.random() * 20 + 20}s`,
+        animationDelay: `${Math.random() * -20}s`,
+        '--opacity': 0.4, // Custom property for max opacity
+      } as React.CSSProperties
+    }));
+    setParticles(newParticles);
   }, []);
 
   return (
@@ -26,44 +32,18 @@ const HeroSection = () => {
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#111_0%,#000_100%)]"></div>
 
-        {/* Animated Particles - Independent of scroll */}
+        {/* CSS Animated Particles - Independent of scroll & Main Thread */}
         {particles.map((p) => (
-          <motion.div
+          <div
             key={p.id}
-            initial={{ opacity: 0 }}
-            animate={{
-              y: ["-10%", "110%"],
-              opacity: [0, 0.4, 0],
-              x: [`${p.x}%`, `${p.x + (Math.random() * 10 - 5)}%`]
-            }}
-            transition={{
-              duration: p.duration,
-              repeat: Infinity,
-              ease: "linear",
-              delay: p.delay
-            }}
-            className="absolute rounded-full bg-white"
-            style={{
-              left: `${p.x}%`,
-              width: p.size,
-              height: p.size,
-              filter: 'blur(1px)',
-            }}
+            className="absolute rounded-full bg-white blur-[1px] animate-particle"
+            style={p.style}
           />
         ))}
 
-        {/* Moving Light Rays */}
-        <motion.div
-          animate={{
-            opacity: [0.1, 0.2, 0.1],
-            rotate: [0, 360]
-          }}
-          transition={{
-            duration: 60,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] bg-[conic-gradient(from_0deg,transparent,rgba(255,255,255,0.05),transparent,transparent,rgba(255,255,255,0.05),transparent)]"
+        {/* Moving Light Rays - CSS Animation */}
+        <div
+          className="absolute top-1/2 left-1/2 w-[200%] h-[200%] bg-[conic-gradient(from_0deg,transparent,rgba(255,255,255,0.05),transparent,transparent,rgba(255,255,255,0.05),transparent)] animate-spin-slow pointer-events-none"
         />
 
         {/* Vignette & Grain */}
@@ -87,6 +67,7 @@ const HeroSection = () => {
                 width={28}
                 height={28}
                 className="object-contain"
+                priority // LCP Optimization
               />
               <span className="text-[14px] font-medium tracking-tight uppercase">BeyondChats Intelligence</span>
             </div>
@@ -106,55 +87,36 @@ const HeroSection = () => {
 
       {/* Hero Content */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mb-6"
-        >
+        {/* CSS Animation for immediate LCP paint */}
+        <div className="mb-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
           <span className="font-mono text-[10px] sm:text-[12px] tracking-[0.6em] text-white/40 uppercase">
             Quantized Content Synthesis
           </span>
-        </motion.div>
+        </div>
 
         <h1 className="text-[clamp(42px,12vw,140px)] leading-[0.85] tracking-[-0.06em] font-light flex flex-col items-center gap-0">
-          <motion.span
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="block opacity-90"
-          >
+          <span className="block opacity-90 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             Deep
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="block italic font-serif"
-          >
+          </span>
+          <span className="block italic font-serif animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             Intelligence.
-          </motion.span>
+          </span>
         </h1>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="mt-8 flex items-center gap-6 text-[11px] font-mono tracking-[0.3em] text-white/30"
-        >
+        <div className="mt-8 flex items-center gap-6 text-[11px] font-mono tracking-[0.3em] text-white/30 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
           <Link href="#vision" className="hover:text-white transition-colors duration-500">VISION</Link>
           <div className="w-1 h-1 rounded-full bg-white/20"></div>
           <Link href="#features" className="hover:text-white transition-colors duration-500">SYSTEMS</Link>
           <div className="w-1 h-1 rounded-full bg-white/20"></div>
           <Link href="/lab" className="hover:text-white transition-colors duration-500">ARTICLES</Link>
-        </motion.div>
+        </div>
       </div>
 
       {/* Bottom Sub-heading */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
         className="relative z-10 w-full px-[4vw] pb-8 flex flex-col items-center"
       >
         <div className="max-w-[1400px] w-full border-t border-white/10 pt-6 flex flex-col items-center text-center">

@@ -162,6 +162,7 @@ const VisionIntro = () => {
                             loop
                             muted
                             playsInline
+                            preload="none"
                             className="w-full h-full object-cover grayscale opacity-60"
                         >
                             <source src="https://player.vimeo.com/progressive_redirect/playback/1125885537/rendition/1440p/file.mp4?loc=external&signature=a5520ff66674eb10bf783202d865de09bb8ae399c074133d636c102b19173d59" type="video/mp4" />
